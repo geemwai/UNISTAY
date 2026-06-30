@@ -9,7 +9,9 @@ import { createServer as createViteServer } from "vite";
 // Initialize Firebase Admin
 // Load credentials from local serviceAccountKey.json or fallback to environment/project configurations
 const firebaseProjectId = "nairobi-rental-finder-d2e2f";
-const serviceAccountPath = path.join(process.cwd(), "credentials", "serviceAccountKey.json");
+const serviceAccountPath = process.env.RENDER
+  ? "/etc/secrets/serviceAccountKey.json"
+  : path.join(process.cwd(), "credentials", "serviceAccountKey.json");
 
 if (getApps().length === 0) {
   if (fs.existsSync(serviceAccountPath)) {
