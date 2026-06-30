@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Deny all by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable, hardened helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // 1. Users collection rules (PII Isolation and Role Separation)
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      // Allow list only for Admin to prevent leaking all student emails
+      allow list: if isAdmin();
+      
+      // Prevent self-assigned roles: during creation, only allow registering as 'student'
+      allow create: if isOwner(userId) && 
+        incoming().uid == userId &&
+        incoming().role == 'student' &&
+        incoming().email is string &&
+        incoming().name is string &&
+        incoming().name.size() <= 100 &&
+        incoming().createdAt is string;
+
+      // Restrict role elevation: students can only update name, admin can do anything
+      allow update: if (isOwner(userId) && 
+        incoming().role == 'student' && 
+        incoming().email == existing().email && 
+        incoming().uid == existing().uid &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['name'])) || isAdmin();
+        
+      allow delete: if isAdmin();
+    }
+
+    // Validation helper for Listings
+    function isValidListing(data) {
+      return data.title is string && data.title.size() <= 200 &&
+        data.roomType in ['Shared Room', 'Bedsitter', 'One Bedroom'] &&
+        data.monthlyRent is int && data.monthlyRent >= 5000 &&
+        data.location is string && data.location.size() <= 200 &&
+        data.nearbyUniversity is string && data.nearbyUniversity.size() <= 200 &&
+        data.distanceFromCampus is string && data.distanceFromCampus.size() <= 100 &&
+        data.description is string && data.description.size() <= 5000 &&
+        data.amenities is list && data.amenities.size() <= 30 &&
+        data.availabilityStatus in ['Available', 'Occupied'] &&
+        data.bedrooms is int && data.bedrooms >= 0 &&
+        data.bathrooms is int && data.bathrooms >= 0 &&
+        data.images is list && data.images.size() <= 10 &&
+        data.datePosted is string;
+    }
+
+    // 2. Listings collection rules
+    match /listings/{listingId} {
+      allow get, list: if isSignedIn();
+      allow create: if isAdmin() && isValidId(listingId) && isValidListing(incoming());
+      allow update: if isAdmin() && isValidListing(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // Validation helper for Reviews
+    function isValidReview(data) {
+      return data.name is string && data.name.size() <= 100 &&
+        data.rating is int && data.rating >= 1 && data.rating <= 5 &&
+        data.comment is string && data.comment.size() <= 1000 &&
+        data.date is string &&
+        data.approved is bool;
+    }
+
+    // 3. Reviews collection rules (Query Enforcer for List)
+    match /reviews/{reviewId} {
+      // Students can list approved reviews, Admins can view all reviews
+      allow list, get: if isSignedIn() && (resource.data.approved == true || isAdmin());
+      // Students can create unapproved reviews
+      allow create: if isSignedIn() && isValidReview(incoming()) && incoming().approved == false;
+      // Only admins can approve or update/delete reviews
+      allow update: if isAdmin() && isValidReview(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // 4. FAQs collection rules
+    match /faqs/{faqId} {
+      allow read, list: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // 5. Settings collection rules
+    match /settings/{settingId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

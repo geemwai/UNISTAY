@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "name", "role", "createdAt"]
+    },
+    "Listing": {
+      "title": "Listing",
+      "description": "Property or room listing for student accommodation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "roomType": { "type": "string", "enum": ["Shared Room", "Bedsitter", "One Bedroom"] },
+        "monthlyRent": { "type": "integer" },
+        "location": { "type": "string" },
+        "nearbyUniversity": { "type": "string" },
+        "distanceFromCampus": { "type": "string" },
+        "description": { "type": "string" },
+        "amenities": { "type": "array" },
+        "availabilityStatus": { "type": "string", "enum": ["Available", "Occupied"] },
+        "bedrooms": { "type": "integer" },
+        "bathrooms": { "type": "integer" },
+        "images": { "type": "array" },
+        "datePosted": { "type": "string" },
+        "houseRules": { "type": "string" },
+        "googleMapsUrl": { "type": "string" }
+      },
+      "required": ["title", "roomType", "monthlyRent", "location", "nearbyUniversity", "distanceFromCampus", "description", "amenities", "availabilityStatus", "bedrooms", "bathrooms", "images", "datePosted"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Student reviews for accommodation or the service",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "rating": { "type": "integer" },
+        "comment": { "type": "string" },
+        "date": { "type": "string" },
+        "approved": { "type": "boolean" }
+      },
+      "required": ["name", "rating", "comment", "date", "approved"]
+    },
+    "Faq": {
+      "title": "Faq",
+      "description": "Frequently Asked Questions",
+      "type": "object",
+      "properties": {
+        "question": { "type": "string" },
+        "answer": { "type": "string" },
+        "order": { "type": "integer" }
+      },
+      "required": ["question", "answer", "order"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Website global settings",
+      "type": "object",
+      "properties": {
+        "whatsappNumber": { "type": "string" },
+        "contactEmail": { "type": "string" },
+        "aboutText": { "type": "string" }
+      },
+      "required": ["whatsappNumber", "contactEmail", "aboutText"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and roles"
+    },
+    "listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Available student rooms"
+    },
+    "reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Reviews of accommodation"
+    },
+    "faqs/{faqId}": {
+      "schema": "Faq",
+      "description": "FAQs content"
+    },
+    "settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Global website configurations"
+    }
+  }
+}

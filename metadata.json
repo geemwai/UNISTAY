@@ -1,0 +1,6 @@
+{
+  "name": "UNISTAY",
+  "description": "Premium full-stack student accommodation finder helping college students locate and rent Shared Rooms, Bedsitters, and One-Bedrooms nearby.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
