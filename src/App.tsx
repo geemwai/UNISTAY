@@ -527,7 +527,7 @@ export default function App() {
               isLoggedIn={!!userProfile}
             />
             <ListingsSection
-             listings={filteredListings}
+             listings={listings}
              onViewDetails={handleViewListingDetails}
              isLoggedIn={!!userProfile}
              onOpenAuth={() => handleOpenAuthModal("login")}
