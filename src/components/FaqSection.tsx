@@ -7,7 +7,7 @@ interface FaqSectionProps {
   whatsappNumber?: string;
 }
 
-export default function FaqSection({ faqs, whatsappNumber = "+254712345678" }: FaqSectionProps) {
+export default function FaqSection({ faqs, whatsappNumber = "+254142606140" }: FaqSectionProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {

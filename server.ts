@@ -249,7 +249,7 @@ app.post("/api/register", async (req, res) => {
     let role = "student";
     if (
       email.toLowerCase() === "ndungumwaigeorge@gmail.com" ||
-      email.toLowerCase().includes("admin@unistay.com")
+      email.toLowerCase().includes("unistay.support@gmail.com")
     ) {
       role = "admin";
       console.log(`Promoting ${email} to Admin on registration.`);

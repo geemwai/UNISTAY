@@ -36,9 +36,9 @@ export default function App() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [webSettings, setWebSettings] = useState<WebSettings>({
-    whatsappNumber: "+254712345678",
-    contactEmail: "support@unistay.com",
-    aboutText: "UNISTAY is Kenya's leading dedicated student accommodation finder. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions."
+    whatsappNumber: "+254142606140",
+    contactEmail: "unistay.support@gmail.com",
+    aboutText: "UNISTAY is one of Kenya's dedicated student accommodation finder developed by students for students. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions."
   });
 
   // UI States

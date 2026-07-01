@@ -1108,7 +1108,7 @@ export default function AdminDashboard({
                   required
                   value={setSupportEmail}
                   onChange={(e) => setSetSupportEmail(e.target.value)}
-                  placeholder="support@unistay.com"
+                  placeholder="support@gmail.com"
                   className="w-full p-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-semibold text-slate-800"
                 />
               </div>

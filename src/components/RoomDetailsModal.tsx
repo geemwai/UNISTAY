@@ -11,7 +11,7 @@ interface RoomDetailsModalProps {
 export default function RoomDetailsModal({
   listing,
   onClose,
-  whatsappNumber = "+254712345678",
+  whatsappNumber = "+254142606140",
 }: RoomDetailsModalProps) {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
