@@ -527,11 +527,12 @@ export default function App() {
               isLoggedIn={!!userProfile}
             />
             <ListingsSection
-              listings={listings}
-              onViewDetails={handleViewListingDetails}
-              isLoggedIn={!!userProfile}
-              onOpenAuth={() => handleOpenAuthModal("login")}
-            />
+             listings={filteredListings}
+             onViewDetails={handleViewListingDetails}
+             isLoggedIn={!!userProfile}
+             onOpenAuth={() => handleOpenAuthModal("login")}
+             isAdmin={userProfile?.role === "admin"} 
+           /> 
             <FaqSection faqs={faqs} whatsappNumber={webSettings.whatsappNumber} />
           </div>
         )}
@@ -649,6 +650,7 @@ export default function App() {
           listing={activeDetailsListing}
           onClose={() => setActiveDetailsListing(null)}
           whatsappNumber={webSettings.whatsappNumber}
+          isAdmin={userProfile?.role === "admin"} 
         />
       )}
 

@@ -7,6 +7,7 @@ interface ListingsSectionProps {
   onViewDetails: (listing: Listing) => void;
   isLoggedIn: boolean;
   onOpenAuth: () => void;
+  isAdmin?: boolean; // <-- Add this line
 }
 
 export default function ListingsSection({
@@ -14,6 +15,7 @@ export default function ListingsSection({
   onViewDetails,
   isLoggedIn,
   onOpenAuth,
+  isAdmin = false, // <-- Add this parameter with a default of false
 }: ListingsSectionProps) {
   // Filter States
   const [searchQuery, setSearchQuery] = useState("");
@@ -278,10 +280,12 @@ export default function ListingsSection({
                       {room.title}
                     </h3>
                     
-                    <div className="flex items-center gap-1.5 text-slate-400 text-xs font-semibold">
-                      <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-                      <span className="truncate">{room.location}</span>
-                    </div>
+                   <div className="flex items-center gap-1.5 text-slate-400 text-xs font-semibold">
+                     <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                     <span className="truncate">
+                      {isAdmin ? room.location : "🔒 Location Protected (Admin Only)"}
+                     </span>
+                   </div>
 
                     <div className="flex items-center gap-1.5 text-slate-400 text-xs font-semibold">
                       <GraduationCap className="w-3.5 h-3.5 text-orange-400 shrink-0" />

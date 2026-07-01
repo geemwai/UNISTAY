@@ -6,12 +6,14 @@ interface RoomDetailsModalProps {
   listing: Listing;
   onClose: () => void;
   whatsappNumber?: string;
+  isAdmin?: boolean; // <-- Add this line
 }
 
 export default function RoomDetailsModal({
   listing,
   onClose,
   whatsappNumber = "+254142606140",
+  isAdmin = false, // <-- Add this parameter
 }: RoomDetailsModalProps) {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
@@ -168,7 +170,7 @@ export default function RoomDetailsModal({
                   <MapPin className="w-4 h-4 text-orange-500" /> Location Details
                 </h4>
                 <div className="text-slate-300 text-sm font-semibold space-y-2 pt-1">
-                  <p>📍 <strong className="text-slate-400">Primary Zone:</strong> {listing.location}</p>
+                  <p>📍 <strong className="text-slate-400">Primary Zone:</strong> {isAdmin ? listing.location : <span className="text-orange-400 font-bold">🔒 Protected (Admin Only)</span>}</p>
                   <p>🎓 <strong className="text-slate-400">Nearby College:</strong> {listing.nearbyUniversity}</p>
                   <p>🚶 <strong className="text-slate-400">Actual Proximity:</strong> {listing.distanceFromCampus} from campus gateway</p>
                 </div>
@@ -213,11 +215,14 @@ export default function RoomDetailsModal({
                 <div className="aspect-video w-full rounded-xl bg-slate-900 border border-slate-850 overflow-hidden relative flex flex-col justify-center items-center text-center p-4">
                   <div className="absolute inset-0 bg-cover bg-center opacity-10 filter grayscale" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80')" }} />
                   <MapPin className="w-8 h-8 text-orange-500 relative z-10 animate-bounce" />
-                  <p className="text-[11px] font-bold text-slate-300 mt-2 relative z-10 truncate w-full px-2">
-                    {listing.location}
-                  </p>
+                  {/* Map Graphic Preview text */}
+                 <p className="text-[11px] font-bold text-slate-300 mt-2 relative z-10 truncate w-full px-2">
+                  {isAdmin ? listing.location : "🔒 Protected (Admin Only)"}
+                 </p>
                 </div>
 
+              {/* Button Redirection Logic */}
+              {isAdmin ? (
                 <a
                   href={listing.googleMapsUrl || mapSearchUrl}
                   target="_blank"
@@ -226,7 +231,12 @@ export default function RoomDetailsModal({
                 >
                   View on Google Maps <ExternalLink className="w-3.5 h-3.5" />
                 </a>
-              </div>
+              ) : (
+                <div className="w-full text-center py-2 px-3 border border-slate-800 rounded-xl text-xs font-semibold text-slate-500 bg-slate-900">
+                  Google Maps Restricted
+                </div>
+               )}
+             </div>
 
             </div>
 
