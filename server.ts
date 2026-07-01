@@ -160,7 +160,7 @@ async function seedInitialData() {
       console.log("Seeding initial reviews...");
       const initialReviews = [
         {
-          name: "George Ndungu",
+          name: "George Kariuki",
           rating: 5,
           comment: "Finding a bedsitter around Juja was extremely stressful before UNISTAY. The WhatsApp button connected me directly to the manager, and I was moved in within two days! Clean, verified rooms, and amazing experience.",
           date: new Date().toISOString(),
@@ -185,9 +185,9 @@ async function seedInitialData() {
     if (!settingsSnap.exists) {
       console.log("Seeding initial settings...");
       await db.collection("settings").doc("contact").set({
-        whatsappNumber: "+254712345678",
-        contactEmail: "support@unistay.com",
-        aboutText: "UNISTAY is Kenya's leading dedicated student accommodation finder. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions."
+        whatsappNumber: "+254142606140",
+        contactEmail: "unistay.support@gmail.com",
+        aboutText: "UNISTAY is one of Kenya's dedicated student accommodation finder developed by students for students. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions."
       });
     }
 
@@ -249,7 +249,7 @@ app.post("/api/register", async (req, res) => {
     let role = "student";
     if (
       email.toLowerCase() === "ndungumwaigeorge@gmail.com" ||
-      email.toLowerCase().includes("unistay.support@gmail.com")
+      email.toLowerCase() === "unistay.support@gmail.com"
     ) {
       role = "admin";
       console.log(`Promoting ${email} to Admin on registration.`);
