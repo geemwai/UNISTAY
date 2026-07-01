@@ -12,7 +12,7 @@ export default function Footer({
   onNavigate,
   whatsappNumber = "+254142606140",
   contactEmail = "unistay.support@gmail.com",
-  aboutText = "UNISTAY is one of Kenya's dedicated student accommodation finder developed by students for students. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions.",
+  aboutText = "UNISTAY is Kenya's leading dedicated student accommodation finder. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions.",
 }: FooterProps) {
 
   const handleWhatsAppClick = () => {
@@ -41,6 +41,11 @@ export default function Footer({
             
             {/* Socials */}
             <div className="flex gap-3 pt-2">
+              <a href="https://tiktok.com/@unistay76" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors flex items-center justify-center" title="TikTok">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.94-1.74-.22-.2-.4-.43-.58-.66v6.56c.01 2-.51 4.07-1.76 5.61-1.38 1.72-3.65 2.68-5.83 2.53-2.4-.1-4.73-1.42-5.83-3.56-1.2-2.28-.96-5.26.7-7.23 1.34-1.63 3.6-2.49 5.71-2.2v4.06c-1.25-.12-2.58.33-3.26 1.39-.77 1.11-.64 2.74.37 3.65 1 .9 2.56.97 3.52.12.52-.44.75-1.12.75-1.79V.02z" />
+                </svg>
+              </a>
               <a href="#" className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
                 <Twitter className="w-4 h-4" />
               </a>

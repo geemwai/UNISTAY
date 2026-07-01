@@ -17,6 +17,7 @@ import ListingsSection from "./components/ListingsSection";
 import RoomDetailsModal from "./components/RoomDetailsModal";
 import ReviewSection from "./components/ReviewSection";
 import FaqSection from "./components/FaqSection";
+import AboutSection from "./components/AboutSection";
 import Footer from "./components/Footer";
 import AuthModal from "./components/AuthModal";
 import AdminDashboard from "./components/AdminDashboard";
@@ -41,6 +42,16 @@ export default function App() {
     aboutText: "UNISTAY is one of Kenya's dedicated student accommodation finder developed by students for students. We eliminate the middleman and physical stress by providing a curated, verified directory of rooms, bedsitters, and shared apartments near primary higher-learning institutions."
   });
 
+    // Database status state
+  const [dbStatus, setDbStatus] = useState<{
+    status: "ok" | "error";
+    error: string | null;
+    projectId: string;
+    hasEnvVar: boolean;
+    hasFile: boolean;
+    message: string;
+  } | null>(null);
+  
   // UI States
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<"login" | "register">("login");
@@ -64,6 +75,18 @@ export default function App() {
   // ----------------------------------------------------
   // DATA FETCHING ROUTINES (REST API Client)
   // ----------------------------------------------------
+    const checkDbStatus = async () => {
+    try {
+      const res = await fetch("/api/db-status");
+      if (res.ok) {
+        const data = await res.json();
+        setDbStatus(data);
+      }
+    } catch (err) {
+      console.error("Error checking database status:", err);
+    }
+  };
+  
   const fetchListings = async () => {
     try {
       const res = await fetch("/api/listings");
@@ -133,6 +156,7 @@ export default function App() {
   };
 
   const refreshAllData = () => {
+    checkDbStatus();
     fetchListings();
     fetchReviews();
     fetchFaqs();
@@ -511,7 +535,47 @@ export default function App() {
         />
       )}
 
-      {/* VIEW ENGINE DISPATCHER */}
+     {/* Database Setup Warning Banner */}
+      {dbStatus && dbStatus.status === "error" && (
+        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-6">
+          <div className="bg-red-950/20 border border-red-500/30 rounded-2xl p-6 text-slate-300 shadow-xl backdrop-blur-sm animate-fade-in">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-red-500/10 rounded-xl text-red-400 shrink-0">
+                <Shield className="w-6 h-6 animate-pulse" />
+              </div>
+              <div className="space-y-2 w-full">
+                <h3 className="text-base font-bold text-red-200">Firebase Admin SDK Permissions Required</h3>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  Your custom Firebase project <code className="px-1.5 py-0.5 rounded bg-slate-900 font-mono text-xs text-red-300">nairobi-rental-finder-d2e2f</code> has returned a <strong className="text-red-400">Permission Denied</strong> error because the backend server is running in our Cloud Run environment and does not have the administrative keys.
+                </p>
+                <div className="mt-4 bg-slate-900/60 rounded-xl p-5 border border-slate-800/80 space-y-3 text-xs leading-relaxed">
+                  <p className="font-bold text-slate-200 flex items-center gap-1.5">💡 How to fix this in 60 seconds:</p>
+                  <ol className="list-decimal list-inside space-y-2 text-slate-300 font-medium">
+                    <li>
+                      Go to your <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:underline inline-flex items-center gap-0.5 font-bold">Firebase Console</a>, open project <strong className="text-slate-100 font-mono">nairobi-rental-finder-d2e2f</strong>, and go to <strong className="text-slate-100">Project Settings &gt; Service Accounts</strong>.
+                    </li>
+                    <li>
+                      Click the <strong className="text-slate-100 font-bold">"Generate New Private Key"</strong> button to download the administrative JSON file.
+                    </li>
+                    <li>
+                      Open the <strong className="text-slate-100 font-bold">Settings</strong> panel (gear icon in the top-right of AI Studio's screen).
+                    </li>
+                    <li>
+                      Add a new secret/environment variable named <code className="px-1.5 py-0.5 rounded bg-slate-950 font-mono text-red-300 font-bold">FIREBASE_SERVICE_ACCOUNT</code> and paste the **entire content** of the downloaded JSON file as its value.
+                    </li>
+                    <li>
+                      Alternatively, upload the downloaded file as <strong className="text-slate-100 font-mono">credentials/serviceAccountKey.json</strong> into your code workspace.
+                    </li>
+                  </ol>
+                  <p className="text-[11px] text-slate-400 italic mt-2">Note: Once added, the application will instantly connect and auto-seed listings, reviews, and settings successfully!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        {/* VIEW ENGINE DISPATCHER */}
       <main className="flex-1">
         {currentView === "home" && (
           <div className="animate-fade-in space-y-0">
@@ -533,6 +597,10 @@ export default function App() {
              onOpenAuth={() => handleOpenAuthModal("login")}
              isAdmin={userProfile?.role === "admin"} 
            /> 
+           <AboutSection onNavigate={(view) => {
+              setCurrentView(view);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }} />
             <FaqSection faqs={faqs} whatsappNumber={webSettings.whatsappNumber} />
           </div>
         )}
@@ -544,7 +612,17 @@ export default function App() {
               onViewDetails={handleViewListingDetails}
               isLoggedIn={!!userProfile}
               onOpenAuth={() => handleOpenAuthModal("login")}
+            isAdmin={userProfile?.role === "admin"}
             />
+          </div>
+        )}
+
+        {currentView === "reviews" && (
+          <div className="animate-fade-in">
+            <AboutSection onNavigate={(view) => {
+              setCurrentView(view);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }} />
           </div>
         )}
 

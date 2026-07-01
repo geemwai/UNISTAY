@@ -22,8 +22,7 @@ export default function Header({
   const navItems = [
     { label: "Home", view: "home" },
     { label: "Available Rooms", view: "listings" },
-    { label: "Reviews", view: "reviews" },
-    { label: "FAQs", view: "faqs" },
+    { label: "About", view: "about" },
   ];
 
   const handleNavClick = (view: string) => {

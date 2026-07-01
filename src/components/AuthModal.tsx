@@ -198,7 +198,7 @@ export default function AuthModal({
         {/* Main credentials Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
           
-          {/* Full Name for registration */}
+          /* Full Name for registration */}
           {activeTab === "register" && (
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">
@@ -211,7 +211,7 @@ export default function AuthModal({
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="George Ndungu"
+                  placeholder="John Doe"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium text-slate-200 transition-all placeholder:text-slate-500"
                 />
               </div>
@@ -230,7 +230,7 @@ export default function AuthModal({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="student@unistay.com"
+                placeholder="unistay.support@gmail.com"
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium text-slate-200 transition-all placeholder:text-slate-500"
               />
             </div>
