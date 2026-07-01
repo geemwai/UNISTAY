@@ -198,8 +198,7 @@ export default function AuthModal({
         {/* Main credentials Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-left">
           
-          /* Full Name for registration */}
-          {activeTab === "register" && (
+           {activeTab === "register" && (
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">
                 Full Name
