@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors"; 
 import path from "path";
 import fs from "fs";
 import { initializeApp, getApps, cert } from "firebase-admin/app";
@@ -8,7 +9,7 @@ import { createServer as createViteServer } from "vite";
 
 // Initialize Firebase Admin
 // Load credentials from local serviceAccountKey.json or fallback to environment/project configurations
-const firebaseProjectId = "nairobi-rental-finder-d2e2f";
+const firebaseProjectId = "unistay-8d1db";
 const serviceAccountPath = process.env.RENDER
   ? "/etc/secrets/serviceAccountKey.json"
   : path.join(process.cwd(), "credentials", "serviceAccountKey.json");
@@ -43,7 +44,16 @@ const auth = getAuth();
 const app = express();
 const PORT = 3000;
 
+app.use(cors({
+ origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.options("*", cors());
+
 app.use(express.json());
+
 
 // ----------------------------------------------------
 // AUTO-SEEDING ROUTINES (Failsafe & Seamless Launch)
