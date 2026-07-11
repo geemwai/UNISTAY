@@ -39,6 +39,7 @@ if (getApps().length === 0) {
 }
 
 const db = getFirestore();
+console.log("Firestore project:", db.app.options.projectId);
 const auth = getAuth();
 
 const app = express();
