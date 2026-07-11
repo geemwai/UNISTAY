@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBl-qaaugXQFqzDdFdDaTwTY0OfQs6Kaok",
-  authDomain: "nairobi-rental-finder-d2e2f.firebaseapp.com",
-  projectId: "nairobi-rental-finder-d2e2f",
-  storageBucket: "nairobi-rental-finder-d2e2f.firebasestorage.app",
-  messagingSenderId: "123769038952",
-  appId: "1:123769038952:web:8aaac371b8d00e0887f3dd",
-  measurementId: "G-SSDH6WEVK3"
+  apiKey: "AIzaSyCsISzBTdfdbnaNpQElvvDO0PXeSeQctJo",
+  authDomain: "unistay-8d1db.firebaseapp.com",
+  projectId: "unistay-8d1db",
+  storageBucket: "unistay-8d1db.firebasestorage.app",
+  messagingSenderId: "1051507088352",
+  appId: "1:1051507088352:web:be6bf07ece829b5925a985",
+  measurementId: "G-VHK17TGJF1"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -23,6 +23,8 @@ import AuthModal from "./components/AuthModal";
 import AdminDashboard from "./components/AdminDashboard";
 import Toast, { ToastMessage } from "./components/Toast";
 
+const API_URL = "https://unistay-fzp9.onrender.com";
+
 export default function App() {
   // Navigation
   const [currentView, setCurrentView] = useState<string>("home");
@@ -77,7 +79,7 @@ export default function App() {
   // ----------------------------------------------------
     const checkDbStatus = async () => {
     try {
-      const res = await fetch("/api/db-status");
+      const res = await fetch(`${API_URL}/api/db-status`);
       if (res.ok) {
         const data = await res.json();
         setDbStatus(data);
@@ -89,7 +91,7 @@ export default function App() {
   
   const fetchListings = async () => {
     try {
-      const res = await fetch("/api/listings");
+      const res = await fetch(`${API_URL}/api/listings`);
       if (res.ok) {
         const data = await res.json();
         setListings(data);
@@ -101,7 +103,7 @@ export default function App() {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch("/api/reviews");
+      const res = await fetch(`${API_URL}/api/reviews`);
       if (res.ok) {
         const data = await res.json();
         setReviews(data);
@@ -113,7 +115,7 @@ export default function App() {
 
   const fetchFaqs = async () => {
     try {
-      const res = await fetch("/api/faqs");
+      const res = await fetch(`${API_URL}/api/faqs`);
       if (res.ok) {
         const data = await res.json();
         setFaqs(data);
@@ -125,7 +127,7 @@ export default function App() {
 
   const fetchSettings = async () => {
     try {
-      const res = await fetch("/api/settings");
+      const res = await fetch(`${API_URL}/api/settings`);
       if (res.ok) {
         const data = await res.json();
         setWebSettings(data);
@@ -141,7 +143,7 @@ export default function App() {
       const user = auth.currentUser;
       if (!user) return;
       const idToken = await user.getIdToken();
-      const res = await fetch("/api/users", {
+      const res = await fetch(`${API_URL}/api/users`, {
         headers: {
           "Authorization": `Bearer ${idToken}`
         }
@@ -175,7 +177,7 @@ export default function App() {
       if (firebaseUser) {
         try {
           // 1. Sync / register profile in Firestore database via secure POST
-          const registerRes = await fetch("/api/register", {
+          const registerRes = await fetch(`${API_URL}/api/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -196,7 +198,7 @@ export default function App() {
             if (syncResult.profile.role === "admin") {
               // Fetch users
               const idToken = await firebaseUser.getIdToken();
-              const usersRes = await fetch("/api/users", {
+              const usersRes = await fetch(`${API_URL}/api/users`, {
                 headers: { "Authorization": `Bearer ${idToken}` }
               });
               if (usersRes.ok) {
@@ -286,7 +288,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch("/api/listings", {
+      const res = await fetch(`${API_URL}/api/listings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +309,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/listings/${id}`, {
+      const res = await fetch(`${API_URL}/api/listings/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -328,7 +330,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/listings/${id}`, {
+      const res = await fetch(`${API_URL}/api/listings/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${idToken}`
@@ -344,7 +346,7 @@ export default function App() {
   // Student reviews posting
   const handleAddReview = async (name: string, rating: number, comment: string) => {
     try {
-      const res = await fetch("/api/reviews", {
+      const res = await fetch(`${API_URL}/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, rating, comment }),
@@ -367,7 +369,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/reviews/${id}`, {
+      const res = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -388,7 +390,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/reviews/${id}`, {
+      const res = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${idToken}`
@@ -408,7 +410,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch("/api/settings", {
+      const res = await fetch(`${API_URL}/api/settings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -430,7 +432,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch("/api/faqs", {
+      const res = await fetch(`${API_URL}/api/faqs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -451,7 +453,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/faqs/${id}`, {
+      const res = await fetch(`${API_URL}/api/faqs/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -472,7 +474,7 @@ export default function App() {
       if (!user) return false;
       const idToken = await user.getIdToken();
 
-      const res = await fetch(`/api/faqs/${id}`, {
+      const res = await fetch(`${API_URL}/api/faqs/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${idToken}`
