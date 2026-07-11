@@ -15,27 +15,11 @@ const serviceAccountPath = process.env.RENDER
   : path.join(process.cwd(), "credentials", "serviceAccountKey.json");
 
 if (getApps().length === 0) {
-  if (fs.existsSync(serviceAccountPath)) {
-    try {
-      const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
-      initializeApp({
-        credential: cert(serviceAccount),
-        projectId: firebaseProjectId,
-      });
-      console.log("Firebase Admin initialized successfully using service account JSON.");
-    } catch (err) {
-      console.error("Failed to parse or initialize service account, using default project ID fallback:", err);
-      initializeApp({
-        credential: cert(serviceAccountPath), // also try raw path string if parse fails/is not preferred
-        projectId: firebaseProjectId,
-      });
-    }
-  } else {
-    console.warn(`Service account file not found at ${serviceAccountPath}. Initializing Admin SDK using default credentials/project ID.`);
-    initializeApp({
-      projectId: firebaseProjectId,
-    });
-  }
+  initializeApp({
+    credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT as string))
+  });
+
+  console.log("Firebase Admin initialized successfully.");
 }
 
 const db = getFirestore();
